@@ -9,1407 +9,695 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --black: #060606;
-  --surface: #111111;
-  --surface2: #191919;
-  --border: rgba(255,255,255,0.07);
-  --accent: #ff4d00;
-  --accent-dim: rgba(255,77,0,0.12);
-  --accent-glow: rgba(255,77,0,0.25);
-  --white: #ffffff;
-  --gray: #666666;
-  --gray-light: #999999;
-  --success: #3ecf8e;
-  --warning: #f0a500;
-  --danger: #e84646;
-  --info: #4a9eff;
+  --black:      #060608;
+  --surface:    #0f0f12;
+  --surface2:   #171720;
+  --surface3:   #1e1e2a;
+  --border:     rgba(255,255,255,0.07);
+  --border2:    rgba(255,255,255,0.12);
+  --accent:     #6572FF;
+  --accent-dim: rgba(101,114,255,0.10);
+  --accent-glo: rgba(101,114,255,0.22);
+  --white:      #ffffff;
+  --gray:       #55556a;
+  --gray-l:     #9898b0;
+  --success:    #3ecf8e;
+  --warning:    #f0a500;
+  --danger:     #e84646;
+  --info:       #4a9eff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Manrope',sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;}
+h1,h2,h3,h4,h5{font-family:'Syne',sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.1;}
+.label{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
+.wrap{max-width:1060px;margin:0 auto;padding:0 36px;}
+section{padding:120px 0;}
+hr.div{border:none;border-top:1px solid var(--border);margin:0;}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 36px;display:flex;justify-content:space-between;align-items:center;background:rgba(6,6,8,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transform:translateY(-100%);transition:transform .4s cubic-bezier(.16,1,.3,1);}
+nav.show{transform:translateY(0);}
+.nav-brand{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:12px;color:var(--gray-l);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;background:var(--accent);color:var(--black);padding:8px 18px;border-radius:3px;transition:opacity .2s;}
+.nav-cta:hover{opacity:.85;}
+
+/* HERO */
+header{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:36px 0 72px;position:relative;overflow:hidden;}
+header::after{content:'';position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(101,114,255,.07) 0%,transparent 68%);top:-280px;right:-280px;pointer-events:none;}
+header::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(101,114,255,.04) 0%,transparent 70%);bottom:0;left:-100px;pointer-events:none;z-index:0;}
+.hbar{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+.dm-logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+.hmeta{font-size:12px;color:var(--gray);}
+.hero{position:relative;z-index:1;padding-top:110px;}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(101,114,255,.25);border-radius:20px;padding:6px 16px;margin-bottom:36px;}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);display:block;animation:pls 2s ease-in-out infinite;}
+.hero-tag span{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
+@keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+h1.htitle{font-size:clamp(52px,8.5vw,96px);font-weight:800;line-height:1.0;letter-spacing:-.04em;margin-bottom:32px;}
+h1.htitle em{font-style:normal;color:var(--accent);}
+.hsub{max-width:600px;font-size:17px;color:var(--gray-l);line-height:1.75;margin-bottom:60px;}
+.hkpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border);padding-top:44px;}
+.kpi{padding-right:28px;border-right:1px solid var(--border);margin-right:28px;}
+.kpi:last-child{border-right:none;margin-right:0;}
+.kv{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1;display:block;margin-bottom:7px;}
+.kv.ac{color:var(--accent);}
+.kl{font-size:12px;color:var(--gray);line-height:1.4;}
+
+/* SEC HEAD */
+.sh{display:grid;grid-template-columns:200px 1fr;gap:60px;align-items:start;margin-bottom:72px;}
+.sn{font-family:'Syne',sans-serif;font-size:110px;font-weight:800;color:var(--surface2);line-height:1;letter-spacing:-.06em;user-select:none;}
+.sr h2{font-size:clamp(28px,4vw,44px);margin-bottom:16px;}
+.sr p{font-size:15px;color:var(--gray-l);max-width:520px;line-height:1.78;}
+
+/* CALLOUT */
+.callout{border-left:3px solid var(--accent);background:var(--surface);padding:36px 40px;margin:64px 0;}
+.callout blockquote{font-family:'Syne',sans-serif;font-size:clamp(18px,2.8vw,27px);font-weight:700;line-height:1.35;font-style:normal;}
+.callout blockquote em{font-style:normal;color:var(--accent);}
+
+/* SCORES */
+.sw{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+.sc{display:flex;flex-direction:column;gap:22px;}
+.sr2{}
+.stop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.sname{font-size:13px;font-weight:600;}
+.sval{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent);}
+.str{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;}
+.sb{height:100%;border-radius:2px;transition:width 1.3s cubic-bezier(.16,1,.3,1);width:0;}
+.sbad{background:var(--danger);} .smid{background:var(--warning);} .sok{background:var(--accent);} .sgood{background:var(--success);}
+.sb.anim{width:var(--w);}
+
+/* FLAT CARDS */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.fc{background:var(--surface);padding:28px 26px;position:relative;overflow:hidden;transition:background .22s ease;}
+.fc::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--accent);transition:height .35s ease;}
+.fc:hover{background:var(--surface2);}
+.fc:hover::before{height:100%;}
+.fc.hl{background:var(--accent-dim);border:1px solid rgba(101,114,255,.2);}
+.fc.hl::before{height:100%;}
+.fi{font-size:14px;margin-bottom:14px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.ir{background:rgba(232,70,70,.1);} .ia{background:rgba(240,165,0,.1);} .ig{background:rgba(62,207,142,.1);} .ib{background:rgba(74,158,255,.1);} .ip{background:rgba(101,114,255,.12);}
+.ft{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:8px;}
+.fb{font-size:13px;color:var(--gray-l);line-height:1.67;}
+.ftag{display:inline-block;margin-top:14px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:3px;}
+.tr{background:rgba(232,70,70,.1);color:var(--danger);} .ta{background:rgba(240,165,0,.1);color:var(--warning);}
+.tg{background:rgba(62,207,142,.1);color:var(--success);} .tp{background:var(--accent-dim);color:var(--accent);}
+.ti{background:rgba(74,158,255,.1);color:var(--info);}
+
+/* CHANNEL TABLE */
+.cht{width:100%;border-collapse:collapse;}
+.cht th{font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--gray);padding:0 20px 14px 0;text-align:left;border-bottom:1px solid var(--border);}
+.cht td{padding:17px 20px 17px 0;border-bottom:1px solid var(--border);vertical-align:middle;}
+.cht tr:last-child td{border-bottom:none;}
+.chn{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
+.chd{font-size:13px;color:var(--gray-l);}
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;}
+.dt{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.bd{background:rgba(232,70,70,.1);color:var(--danger);} .bd .dt{background:var(--danger);}
+.bl{background:rgba(240,165,0,.1);color:var(--warning);} .bl .dt{background:var(--warning);}
+.ba{background:rgba(102,102,120,.12);color:var(--gray-l);} .ba .dt{background:var(--gray);}
+.bi{background:rgba(74,158,255,.08);color:var(--info);} .bi .dt{background:var(--info);}
+.bo{background:rgba(62,207,142,.08);color:var(--success);} .bo .dt{background:var(--success);}
+
+/* OPP GRID */
+.og{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.op{background:var(--surface);padding:34px 28px;position:relative;transition:background .22s;}
+.op:nth-child(even){background:var(--surface2);}
+.op:hover{background:var(--surface3);}
+.on{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:var(--surface3);line-height:1;margin-bottom:16px;display:block;transition:color .25s;}
+.op:hover .on{color:var(--accent-dim);}
+.ot{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px;}
+.ob{font-size:13px;color:var(--gray-l);line-height:1.68;}
+.of{display:inline-block;margin-top:14px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+
+/* RISKS */
+.rks{display:flex;flex-direction:column;gap:2px;}
+.rk{background:var(--surface);padding:22px 28px;display:flex;gap:20px;align-items:flex-start;}
+.rb{width:3px;min-height:40px;border-radius:2px;flex-shrink:0;align-self:stretch;}
+.rh{background:var(--danger);} .rm{background:var(--warning);} .rl{background:var(--info);}
+.rt h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:5px;}
+.rt p{font-size:13px;color:var(--gray-l);line-height:1.62;}
+
+/* DELIVERABLES */
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.dv{background:var(--surface);padding:30px 26px;}
+.dl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:block;}
+.dt2{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:16px;}
+.di{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.di li{font-size:13px;color:var(--gray-l);padding-left:16px;position:relative;line-height:1.5;}
+.di li::before{content:'—';position:absolute;left:0;color:var(--accent);font-size:10px;top:3px;}
+
+/* TIMELINE */
+.tl{position:relative;}
+.tl::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:1px;background:var(--border);}
+.tli{display:flex;gap:28px;padding-bottom:40px;position:relative;}
+.tli:last-child{padding-bottom:0;}
+.tld{width:48px;height:48px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--accent);position:relative;z-index:1;}
+.tld.ac{background:var(--accent-dim);border-color:rgba(101,114,255,.3);}
+.tlc{padding-top:10px;}
+.tlp{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.tlt{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px;}
+.tlis{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.tlis li{font-size:13px;color:var(--gray-l);padding-left:14px;position:relative;}
+.tlis li::before{content:'·';position:absolute;left:0;color:var(--accent);font-weight:700;}
+
+/* PILLARS */
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.pl{padding:42px 32px;background:var(--surface);}
+.pl.fe{background:var(--accent);color:var(--black);}
+.pn{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;line-height:1;margin-bottom:28px;color:rgba(255,255,255,.04);}
+.pl.fe .pn{color:rgba(0,0,0,.08);}
+.pt{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:22px;}
+.pl.fe .pt{color:var(--black);}
+.pli{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.pli li{font-size:13px;color:var(--gray-l);padding-left:18px;position:relative;line-height:1.55;}
+.pl.fe .pli li{color:rgba(0,0,0,.72);}
+.pli li::before{content:'→';position:absolute;left:0;font-size:11px;color:var(--accent);top:1px;}
+.pl.fe .pli li::before{color:rgba(0,0,0,.45);}
+.pf{margin-top:24px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);display:inline-block;}
+.pl.fe .pf{color:rgba(0,0,0,.5);}
+
+/* PROCESS */
+.pw{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);}
+.ps{padding:38px 28px;border-right:1px solid var(--border);}
+.ps:last-child{border-right:none;}
+.psn{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;display:block;}
+.pst{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:12px;}
+.psd{font-size:13px;color:var(--gray);line-height:1.65;}
+.psli{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:5px;}
+.psli li{font-size:12px;color:var(--gray-l);padding-left:13px;position:relative;line-height:1.45;}
+.psli li::before{content:'·';position:absolute;left:0;color:var(--accent);font-weight:700;}
+
+/* WHY */
+.wg{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.wi{background:var(--surface);padding:34px 30px;display:flex;gap:18px;align-items:flex-start;}
+.wn{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent);line-height:1;flex-shrink:0;width:44px;}
+.wb h4{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:7px;}
+.wb p{font-size:13px;color:var(--gray-l);line-height:1.65;}
+
+/* ABOUT */
+.aw{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.al{background:var(--accent);padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;}
+.alt{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--black);line-height:1.2;margin-bottom:20px;}
+.ald{font-size:14px;color:rgba(0,0,0,.65);line-height:1.75;}
+.ar{background:var(--surface);padding:48px 40px;}
+.ais{display:flex;flex-direction:column;gap:20px;}
+.ai-lb{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;display:block;}
+.ai-v{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
+
+/* NEXT STEPS */
+.nsg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.ns{background:var(--surface);padding:30px 26px;display:flex;gap:16px;align-items:flex-start;}
+.nsn{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent);line-height:1;flex-shrink:0;width:32px;}
+.nsh h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:5px;}
+.nsh p{font-size:13px;color:var(--gray-l);line-height:1.6;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:100px 0 60px;}
+.fhl{font-size:clamp(38px,6.5vw,76px);font-weight:800;line-height:1.03;letter-spacing:-.035em;max-width:720px;margin-bottom:28px;}
+.fhl em{font-style:normal;color:var(--accent);}
+.fsb{font-size:16px;color:var(--gray-l);max-width:460px;margin-bottom:52px;line-height:1.72;}
+.cta{display:inline-block;background:var(--accent);color:var(--black);font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;text-decoration:none;padding:18px 44px;border-radius:3px;transition:transform .2s ease,box-shadow .2s ease;}
+.cta:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(101,114,255,.32);}
+.cta2{display:inline-block;margin-left:16px;font-size:13px;color:var(--gray-l);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .2s,border-color .2s;}
+.cta2:hover{color:var(--white);border-color:var(--gray-l);}
+.fb2{margin-top:80px;padding-top:28px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.fc2{font-size:12px;color:var(--gray);line-height:1.7;}
+.fc2 strong{color:var(--gray-l);}
+.fr{text-align:right;}
+.fbrand{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.fconf{font-size:11px;color:var(--gray);}
+
+::-webkit-scrollbar{width:3px;} ::-webkit-scrollbar-track{background:var(--black);} ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+
+@media(max-width:800px){
+  .wrap{padding:0 20px;} section{padding:80px 0;}
+  .sh{grid-template-columns:1fr;gap:16px;} .sn{font-size:60px;}
+  .sw,.g2,.aw,.wg{grid-template-columns:1fr;}
+  .g3,.og,.dg,.pg,.nsg{grid-template-columns:1fr;}
+  .pw{grid-template-columns:1fr 1fr;}
+  .hkpis{grid-template-columns:1fr 1fr;gap:20px;}
+  .kpi{border-right:none;margin-right:0;border-bottom:1px solid var(--border);padding-bottom:20px;}
+  .kpi:nth-child(2n){border-right:none;} .kpi:last-child{border-bottom:none;}
+  .fb2{flex-direction:column;gap:20px;text-align:center;} .fr{text-align:center;}
+  nav{padding:12px 20px;} .nav-links{display:none;}
+  .cta2{display:block;margin:16px 0 0;}
 }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--black);
-  color: var(--white);
-  font-family: 'Manrope', sans-serif;
-  font-size: 15px;
-  line-height: 1.65;
-  overflow-x: hidden;
-}
-
-/* ─── NOISE TEXTURE ─── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.4;
-}
-
-/* ─── TYPOGRAPHY ─── */
-h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
-
-.label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-/* ─── LAYOUT ─── */
-.wrap { max-width: 1040px; margin: 0 auto; padding: 0 32px; }
-
-section { padding: 120px 0; }
-
-hr.divider {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 0;
-}
-
-/* ─── FADE IN ON SCROLL ─── */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-
-/* ─────────────────────────────────────────
-   HEADER / HERO
-───────────────────────────────────────── */
-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 36px 0 60px;
-  position: relative;
-  overflow: hidden;
-}
-
-.header-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dm-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.header-date {
-  font-size: 12px;
-  color: var(--gray);
-}
-
-.hero-content {
-  margin-top: auto;
-  padding-top: 100px;
-}
-
-.hero-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
-}
-
-.hero-eyebrow::before {
-  content: '';
-  display: block;
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
-}
-
-.hero-eyebrow span {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-h1.hero-title {
-  font-size: clamp(52px, 8vw, 92px);
-  font-weight: 800;
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  margin-bottom: 36px;
-}
-
-h1.hero-title em {
-  font-style: normal;
-  color: var(--accent);
-}
-
-.hero-desc {
-  max-width: 580px;
-  font-size: 17px;
-  color: var(--gray-light);
-  line-height: 1.7;
-  margin-bottom: 56px;
-}
-
-.hero-stats {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--border);
-  padding-top: 40px;
-}
-
-.hero-stat {
-  flex: 1;
-  padding-right: 32px;
-  border-right: 1px solid var(--border);
-  margin-right: 32px;
-}
-
-.hero-stat:last-child { border-right: none; }
-
-.hero-stat-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--white);
-  display: block;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-
-.hero-stat-label {
-  font-size: 12px;
-  color: var(--gray);
-}
-
-/* Background accent circle */
-header::after {
-  content: '';
-  position: absolute;
-  width: 700px;
-  height: 700px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,77,0,0.06) 0%, transparent 70%);
-  top: -200px;
-  right: -200px;
-  pointer-events: none;
-}
-
-/* ─────────────────────────────────────────
-   SECTION INTRO PATTERN
-───────────────────────────────────────── */
-.section-intro {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 60px;
-  align-items: start;
-  margin-bottom: 72px;
-}
-
-.section-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 120px;
-  font-weight: 800;
-  color: var(--surface2);
-  line-height: 1;
-  letter-spacing: -0.05em;
-  user-select: none;
-}
-
-.section-intro-right h2 {
-  font-size: clamp(28px, 4vw, 42px);
-  margin-bottom: 16px;
-}
-
-.section-intro-right p {
-  font-size: 15px;
-  color: var(--gray-light);
-  max-width: 520px;
-  line-height: 1.75;
-}
-
-/* ─────────────────────────────────────────
-   SCORE BARS
-───────────────────────────────────────── */
-.scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-
-.scores-block { display: flex; flex-direction: column; gap: 20px; }
-
-.score-item { }
-
-.score-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-
-.score-name { font-size: 13px; font-weight: 600; color: var(--white); }
-
-.score-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); }
-
-.score-track {
-  height: 4px;
-  background: var(--surface2);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.score-fill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
-  width: 0;
-}
-
-.score-fill.animated { width: var(--w); }
-
-.fill-bad { background: var(--danger); }
-.fill-mid { background: var(--warning); }
-.fill-ok { background: var(--accent); }
-.fill-good { background: var(--success); }
-
-/* ─────────────────────────────────────────
-   INSIGHT CARDS
-───────────────────────────────────────── */
-.cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-.cards-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-
-.insight-card {
-  background: var(--surface);
-  padding: 28px;
-  position: relative;
-  overflow: hidden;
-}
-
-.insight-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 0;
-  background: var(--accent);
-  transition: height 0.4s ease;
-}
-
-.insight-card:hover::before { height: 100%; }
-
-.insight-card.accent-card {
-  background: var(--accent-dim);
-  border: 1px solid rgba(255,77,0,0.2);
-}
-
-.insight-card.accent-card::before { background: var(--accent); height: 100%; width: 2px; }
-
-.card-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
-  font-size: 16px;
-}
-
-.icon-red { background: rgba(232,70,70,0.12); }
-.icon-amber { background: rgba(240,165,0,0.12); }
-.icon-green { background: rgba(62,207,142,0.12); }
-.icon-blue { background: rgba(74,158,255,0.12); }
-.icon-accent { background: rgba(255,77,0,0.15); }
-
-.card-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--white);
-}
-
-.card-body {
-  font-size: 13px;
-  color: var(--gray-light);
-  line-height: 1.65;
-}
-
-.card-tag {
-  display: inline-block;
-  margin-top: 14px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 3px;
-}
-
-.tag-red { background: rgba(232,70,70,0.12); color: var(--danger); }
-.tag-amber { background: rgba(240,165,0,0.12); color: var(--warning); }
-.tag-green { background: rgba(62,207,142,0.12); color: var(--success); }
-.tag-accent { background: var(--accent-dim); color: var(--accent); }
-.tag-info { background: rgba(74,158,255,0.12); color: var(--info); }
-
-/* ─────────────────────────────────────────
-   CHANNELS TABLE
-───────────────────────────────────────── */
-.channels-table { width: 100%; border-collapse: collapse; }
-
-.channels-table th {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gray);
-  padding: 0 20px 16px 0;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-
-.channels-table td {
-  padding: 18px 20px 18px 0;
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
-}
-
-.channels-table tr:last-child td { border-bottom: none; }
-
-.channel-name-cell {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--white);
-}
-
-.channel-data { font-size: 13px; color: var(--gray-light); }
-
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.status-dot { width: 5px; height: 5px; border-radius: 50%; }
-
-.s-dead { background: rgba(232,70,70,0.1); color: var(--danger); }
-.s-dead .status-dot { background: var(--danger); }
-.s-low { background: rgba(240,165,0,0.1); color: var(--warning); }
-.s-low .status-dot { background: var(--warning); }
-.s-absent { background: rgba(102,102,102,0.12); color: var(--gray-light); }
-.s-absent .status-dot { background: var(--gray); }
-.s-ignored { background: rgba(74,158,255,0.08); color: var(--info); }
-.s-ignored .status-dot { background: var(--info); }
-.s-ok { background: rgba(62,207,142,0.08); color: var(--success); }
-.s-ok .status-dot { background: var(--success); }
-
-/* ─────────────────────────────────────────
-   OPPORTUNITY CARDS
-───────────────────────────────────────── */
-.opp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-
-.opp-card {
-  background: var(--surface);
-  padding: 32px 28px;
-  position: relative;
-  transition: background 0.25s ease;
-}
-
-.opp-card:hover { background: var(--surface2); }
-
-.opp-number {
-  font-family: 'Syne', sans-serif;
-  font-size: 48px;
-  font-weight: 800;
-  color: var(--surface2);
-  line-height: 1;
-  margin-bottom: 16px;
-  display: block;
-  transition: color 0.25s ease;
-}
-
-.opp-card:hover .opp-number { color: rgba(255,77,0,0.15); }
-
-.opp-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--white);
-}
-
-.opp-body {
-  font-size: 13px;
-  color: var(--gray-light);
-  line-height: 1.7;
-}
-
-.opp-impact {
-  display: inline-block;
-  margin-top: 16px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-/* ─────────────────────────────────────────
-   PLAN PILLARS
-───────────────────────────────────────── */
-.pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-
-.pillar {
-  padding: 40px 32px;
-  background: var(--surface);
-  position: relative;
-  overflow: hidden;
-}
-
-.pillar.featured {
-  background: var(--accent);
-  color: var(--black);
-}
-
-.pillar-number {
-  font-family: 'Syne', sans-serif;
-  font-size: 64px;
-  font-weight: 800;
-  line-height: 1;
-  margin-bottom: 24px;
-  color: rgba(255,255,255,0.06);
-}
-
-.pillar.featured .pillar-number { color: rgba(0,0,0,0.1); }
-
-.pillar-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  margin-bottom: 20px;
-  color: var(--white);
-}
-
-.pillar.featured .pillar-title { color: var(--black); }
-
-.pillar-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-
-.pillar-list li {
-  font-size: 13px;
-  color: var(--gray-light);
-  padding-left: 18px;
-  position: relative;
-  line-height: 1.55;
-}
-
-.pillar.featured .pillar-list li { color: rgba(0,0,0,0.7); }
-
-.pillar-list li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  font-size: 11px;
-  top: 1px;
-  color: var(--accent);
-}
-
-.pillar.featured .pillar-list li::before { color: rgba(0,0,0,0.5); }
-
-.pillar-cta {
-  margin-top: 24px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  display: inline-block;
-}
-
-.pillar.featured .pillar-cta { color: rgba(0,0,0,0.6); }
-
-/* ─────────────────────────────────────────
-   PROCESS STEPS
-───────────────────────────────────────── */
-.process-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border: 1px solid var(--border);
-}
-
-.process-step {
-  padding: 36px 28px;
-  border-right: 1px solid var(--border);
-  position: relative;
-}
-
-.process-step:last-child { border-right: none; }
-
-.step-counter {
-  font-family: 'Syne', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  margin-bottom: 20px;
-}
-
-.step-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--white);
-  margin-bottom: 10px;
-}
-
-.step-desc {
-  font-size: 13px;
-  color: var(--gray);
-  line-height: 1.6;
-}
-
-/* ─────────────────────────────────────────
-   WHY US
-───────────────────────────────────────── */
-.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-
-.why-item {
-  background: var(--surface);
-  padding: 36px 32px;
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-.why-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--accent);
-  line-height: 1;
-  flex-shrink: 0;
-  width: 48px;
-}
-
-.why-body h4 {
-  font-family: 'Syne', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--white);
-}
-
-.why-body p {
-  font-size: 13px;
-  color: var(--gray-light);
-  line-height: 1.65;
-}
-
-/* ─────────────────────────────────────────
-   RISKS
-───────────────────────────────────────── */
-.risk-list { display: flex; flex-direction: column; gap: 2px; }
-
-.risk-item {
-  background: var(--surface);
-  padding: 24px 28px;
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-.risk-severity {
-  width: 3px;
-  min-height: 40px;
-  border-radius: 2px;
-  flex-shrink: 0;
-  align-self: stretch;
-}
-
-.sev-high { background: var(--danger); }
-.sev-med { background: var(--warning); }
-.sev-low { background: var(--info); }
-
-.risk-content h4 {
-  font-family: 'Syne', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 4px;
-}
-
-.risk-content p {
-  font-size: 13px;
-  color: var(--gray-light);
-  line-height: 1.6;
-}
-
-/* ─────────────────────────────────────────
-   QUOTE / HIGHLIGHT
-───────────────────────────────────────── */
-.highlight-block {
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  padding: 36px 40px;
-  background: var(--surface);
-  margin: 60px 0;
-}
-
-.highlight-block blockquote {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(20px, 3vw, 28px);
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--white);
-  font-style: normal;
-}
-
-.highlight-block blockquote em {
-  font-style: normal;
-  color: var(--accent);
-}
-
-/* ─────────────────────────────────────────
-   FOOTER / CTA
-───────────────────────────────────────── */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 100px 0 60px;
-}
-
-.footer-headline {
-  font-size: clamp(36px, 6vw, 72px);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  margin-bottom: 24px;
-  max-width: 700px;
-}
-
-.footer-headline em { font-style: normal; color: var(--accent); }
-
-.footer-sub {
-  font-size: 16px;
-  color: var(--gray-light);
-  margin-bottom: 48px;
-  max-width: 480px;
-}
-
-.cta-btn {
-  display: inline-block;
-  background: var(--accent);
-  color: var(--black);
-  font-family: 'Syne', sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 18px 40px;
-  border-radius: 3px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.cta-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255,77,0,0.3);
-}
-
-.footer-bottom {
-  margin-top: 80px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer-credits {
-  font-size: 12px;
-  color: var(--gray);
-}
-
-.footer-credits strong { color: var(--white); }
-
-/* ─────────────────────────────────────────
-   NAV (minimal fixed)
-───────────────────────────────────────── */
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  padding: 16px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(6,6,6,0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  transform: translateY(-100%);
-  transition: transform 0.4s ease;
-}
-
-nav.visible { transform: translateY(0); }
-
-.nav-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.nav-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
-}
-
-.nav-links a {
-  font-size: 12px;
-  color: var(--gray);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover { color: var(--white); }
-
-/* ─────────────────────────────────────────
-   RESPONSIVE
-───────────────────────────────────────── */
-@media (max-width: 768px) {
-  .wrap { padding: 0 20px; }
-  section { padding: 80px 0; }
-  .section-intro { grid-template-columns: 1fr; gap: 20px; }
-  .section-num { font-size: 60px; }
-  .scores-grid { grid-template-columns: 1fr; gap: 28px; }
-  .cards-grid, .cards-grid-2, .opp-grid, .pillar-grid, .why-grid { grid-template-columns: 1fr; }
-  .process-row { grid-template-columns: 1fr 1fr; }
-  .hero-stats { flex-direction: column; gap: 24px; }
-  .hero-stat { border-right: none; border-bottom: 1px solid var(--border); margin-right: 0; padding-right: 0; padding-bottom: 24px; }
-  .hero-stat:last-child { border-bottom: none; }
-  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
-  nav { padding: 12px 20px; }
-  .nav-links { display: none; }
-  .channels-table { font-size: 12px; }
-}
-
-/* ─────────────────────────────────────────
-   SCROLLBAR
-───────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--black); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="main-nav">
-  <span class="nav-logo">We Are Dark Matter</span>
+<nav id="nav">
+  <span class="nav-brand">We Are Dark Matter</span>
   <ul class="nav-links">
     <li><a href="#diagnostico">Diagnóstico</a></li>
-    <li><a href="#presencia">Presencia</a></li>
     <li><a href="#oportunidades">Oportunidades</a></li>
     <li><a href="#plan">Plan</a></li>
+    <li><a href="#entregables">Entregables</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
+  <a href="mailto:hey.darkmatter@gmail.com?subject=Fire Nutrition — Hablemos" class="nav-cta">Hablemos</a>
 </nav>
 
-<!-- ═══════════════════════════════════════
-     HERO
-═══════════════════════════════════════ -->
+<!-- HERO -->
 <header>
-  <div class="wrap header-topbar">
+  <div class="wrap hbar">
     <span class="dm-logo">We Are Dark Matter</span>
-    <span class="header-date">Abril 2026 — Confidencial</span>
+    <span class="hmeta">Propuesta estratégica · Abril 2026 · Confidencial</span>
   </div>
-
-  <div class="wrap hero-content">
-    <div class="hero-eyebrow"><span>Propuesta estratégica</span></div>
-    <h1 class="hero-title">
-      Fire Nutrition<br>
-      <em>×</em> Dark Matter
-    </h1>
-    <p class="hero-desc">
-      Tu producto merece una identidad que lo defienda. Este documento muestra la brecha entre el valor que ofreces y cómo te percibe el mundo — y el plan exacto para cerrarla.
-    </p>
-
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <span class="hero-stat-num">~4K</span>
-        <span class="hero-stat-label">Seguidores Instagram actual</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">3</span>
-        <span class="hero-stat-label">Líneas de producto premium</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">6+</span>
-        <span class="hero-stat-label">Colaboradores institucionales</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num" style="color:var(--accent)">100K+</span>
-        <span class="hero-stat-label">Potencial en 12 meses</span>
-      </div>
+  <div class="wrap hero">
+    <div class="hero-tag"><span>Para Daviz Rosado, Founder de Fire Nutrition</span></div>
+    <h1 class="htitle">Tu producto<br>merece una marca<br><em>que lo defienda.</em></h1>
+    <p class="hsub">Fire Nutrition fabrica con ingredientes certificados de primer nivel. Pero su identidad digital no proyecta esa autoridad. Este documento muestra la brecha — y el plan exacto para cerrarla.</p>
+    <div class="hkpis">
+      <div class="kpi"><span class="kv">~4K</span><span class="kl">Seguidores Instagram actual</span></div>
+      <div class="kpi"><span class="kv">3</span><span class="kl">Líneas de producto premium</span></div>
+      <div class="kpi"><span class="kv">6+</span><span class="kl">Colaboradores institucionales sin activar</span></div>
+      <div class="kpi"><span class="kv ac">+100K</span><span class="kl">Potencial de comunidad en 12 meses</span></div>
     </div>
   </div>
 </header>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ═══════════════════════════════════════
-     01 — DIAGNÓSTICO
-═══════════════════════════════════════ -->
+<!-- 01 DIAGNÓSTICO -->
 <section id="diagnostico">
   <div class="wrap">
-
-    <div class="section-intro reveal">
-      <div class="section-num">01</div>
-      <div class="section-intro-right">
-        <span class="label" style="margin-bottom: 12px; display:block;">Diagnóstico</span>
+    <div class="sh reveal">
+      <div class="sn">01</div>
+      <div class="sr">
+        <span class="label" style="display:block;margin-bottom:14px;">Diagnóstico</span>
         <h2>La brecha entre producto y percepción</h2>
-        <p>Fire Nutrition fabrica con ingredientes certificados de primera línea — Creapure®, Kyowa®, DigeZyme®, KSM-66® — respaldados por nutricionistas licenciados. Pero su identidad digital no proyecta esa autoridad. El riesgo real: competir por precio en lugar de por valor.</p>
+        <p>Fire Nutrition compite con ingredientes certificados — Creapure®, Kyowa®, DigeZyme®, KSM-66® — y tiene el respaldo de nutricionistas licenciados. Pero su identidad digital no refleja esa autoridad. El riesgo: competir por precio en un mercado donde los grandes tienen presupuestos de ocho cifras.</p>
       </div>
     </div>
 
-    <div class="highlight-block reveal">
-      <blockquote>
-        "Un producto de <em>primer nivel</em> con una presencia digital de segundo nivel.<br>
-        Esa brecha tiene un coste directo en ventas."
-      </blockquote>
+    <div class="callout reveal">
+      <blockquote>"Un producto de <em>primer nivel</em> atrapado<br>en una presencia digital de segundo nivel.<br>Esa brecha tiene un coste directo en ventas."</blockquote>
     </div>
 
-    <!-- Score bars -->
-    <div class="scores-grid reveal">
-      <div class="scores-block">
-        <p class="label" style="margin-bottom: 20px;">Puntuación actual por área</p>
-        <div class="score-item">
-          <div class="score-header">
-            <span class="score-name">Contenido & Blog</span>
-            <span class="score-value">6.0</span>
-          </div>
-          <div class="score-track">
-            <div class="score-fill fill-ok" style="--w: 60%"></div>
-          </div>
-        </div>
-        <div class="score-item">
-          <div class="score-header">
-            <span class="score-name">Branding Visual</span>
-            <span class="score-value">5.5</span>
-          </div>
-          <div class="score-track">
-            <div class="score-fill fill-mid" style="--w: 55%"></div>
-          </div>
-        </div>
-        <div class="score-item">
-          <div class="score-header">
-            <span class="score-name">Web & Conversión (UX)</span>
-            <span class="score-value">5.0</span>
-          </div>
-          <div class="score-track">
-            <div class="score-fill fill-mid" style="--w: 50%"></div>
-          </div>
-        </div>
-        <div class="score-item">
-          <div class="score-header">
-            <span class="score-name">Instagram</span>
-            <span class="score-value">3.8</span>
-          </div>
-          <div class="score-track">
-            <div class="score-fill fill-bad" style="--w: 38%"></div>
-          </div>
-        </div>
-        <div class="score-item">
-          <div class="score-header">
-            <span class="score-name">TikTok</span>
-            <span class="score-value">2.5</span>
-          </div>
-          <div class="score-track">
-            <div class="score-fill fill-bad" style="--w: 25%"></div>
-          </div>
-        </div>
-        <div class="score-item">
-          <div class="score-header">
-            <span class="score-name">Facebook</span>
-            <span class="score-value">1.0</span>
-          </div>
-          <div class="score-track">
-            <div class="score-fill fill-bad" style="--w: 10%"></div>
-          </div>
-        </div>
+    <div class="sw reveal">
+      <div class="sc">
+        <p class="label" style="margin-bottom:4px;">Puntuación actual por área</p>
+        <p style="font-size:12px;color:var(--gray);margin-bottom:22px;">Basado en análisis de web, RRSS y comunicación de marca.</p>
+        <div class="sr2"><div class="stop"><span class="sname">Blog & contenido científico</span><span class="sval">6.0</span></div><div class="str"><div class="sb sgood" style="--w:60%"></div></div></div>
+        <div class="sr2"><div class="stop"><span class="sname">Branding visual</span><span class="sval">5.5</span></div><div class="str"><div class="sb smid" style="--w:55%"></div></div></div>
+        <div class="sr2"><div class="stop"><span class="sname">Web & conversión (UX)</span><span class="sval">5.0</span></div><div class="str"><div class="sb smid" style="--w:50%"></div></div></div>
+        <div class="sr2"><div class="stop"><span class="sname">Instagram</span><span class="sval">3.8</span></div><div class="str"><div class="sb sbad" style="--w:38%"></div></div></div>
+        <div class="sr2"><div class="stop"><span class="sname">TikTok</span><span class="sval">2.5</span></div><div class="str"><div class="sb sbad" style="--w:25%"></div></div></div>
+        <div class="sr2"><div class="stop"><span class="sname">Facebook</span><span class="sval">1.0</span></div><div class="str"><div class="sb sbad" style="--w:10%"></div></div></div>
       </div>
-
-      <!-- Critical points -->
       <div>
-        <p class="label" style="margin-bottom: 20px;">Puntos críticos</p>
-        <div style="display: flex; flex-direction: column; gap: 2px;">
-          <div class="insight-card accent-card reveal reveal-delay-1">
-            <div class="card-icon icon-red">🔴</div>
-            <div class="card-title">Web sin jerarquía de valor</div>
-            <div class="card-body">El visitante nuevo no entiende en 3 segundos por qué Fire Nutrition y no Prozis o Myprotein. La propuesta de valor está enterrada bajo banners de producto.</div>
-            <span class="card-tag tag-red">Crítico</span>
+        <p class="label" style="display:block;margin-bottom:20px;">Puntos críticos detectados</p>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div class="fc hl d1 reveal">
+            <div class="fi ir">🔴</div>
+            <div class="ft">Web sin jerarquía de valor</div>
+            <div class="fb">El visitante nuevo no entiende en 3 segundos por qué Fire Nutrition y no la competencia. La propuesta de valor — ingredientes premium, respaldo científico, colaboradores institucionales — está enterrada bajo banners de producto rotativos.</div>
+            <span class="ftag tr">Crítico — impacto directo en ventas</span>
           </div>
-          <div class="insight-card reveal reveal-delay-2">
-            <div class="card-icon icon-red">🔴</div>
-            <div class="card-title">Inconsistencia visual de marca</div>
-            <div class="card-body">El packaging del producto tiene nivel, pero el sistema visual en digital (Instagram, web, emails) no tiene cohesión ni un design system real detrás.</div>
-            <span class="card-tag tag-red">Crítico</span>
+          <div class="fc d2 reveal">
+            <div class="fi ir">🔴</div>
+            <div class="ft">Inconsistencia visual de marca</div>
+            <div class="fb">El packaging tiene nivel, pero no existe un design system real. Instagram, la web y los emails no hablan el mismo idioma visual. Eso erosiona la confianza sin que el usuario lo articule.</div>
+            <span class="ftag tr">Crítico — erosiona confianza</span>
           </div>
-          <div class="insight-card reveal reveal-delay-3">
-            <div class="card-icon icon-amber">🟡</div>
-            <div class="card-title">Comunidad estancada</div>
-            <div class="card-body">4K seguidores en Instagram y 243 posts publicados revela un ratio de crecimiento orgánico casi nulo. Nula presencia estratégica en TikTok.</div>
-            <span class="card-tag tag-amber">Urgente</span>
+          <div class="fc d3 reveal">
+            <div class="fi ia">🟡</div>
+            <div class="ft">Comunidad estancada en ~4K</div>
+            <div class="fb">243 posts con ~4.000 seguidores en Instagram. Ratio de crecimiento orgánico casi nulo. Nula presencia estratégica en TikTok — el canal con mayor ROI para su categoría en España en 2026.</div>
+            <span class="ftag ta">Urgente — la ventana se cierra</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<hr class="divider">
-
-<!-- ═══════════════════════════════════════
-     02 — PRESENCIA DIGITAL
-═══════════════════════════════════════ -->
-<section id="presencia">
-  <div class="wrap">
-    <div class="section-intro reveal">
-      <div class="section-num">02</div>
-      <div class="section-intro-right">
-        <span class="label" style="margin-bottom: 12px; display:block;">Presencia digital</span>
-        <h2>Canales activos, oportunidades perdidas</h2>
-        <p>Un análisis canal por canal revela que la marca invierte esfuerzo en plataformas que generan poco impacto y descuida el canal con mayor ROI para su categoría en 2026.</p>
-      </div>
-    </div>
-
-    <div class="reveal" style="margin-bottom: 60px;">
-      <table class="channels-table">
-        <thead>
-          <tr>
-            <th>Canal</th>
-            <th>Métricas actuales</th>
-            <th>Diagnóstico</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
+    <!-- Canal table -->
+    <div style="margin-top:80px;" class="reveal">
+      <p class="label" style="display:block;margin-bottom:24px;">Análisis de canales digitales</p>
+      <table class="cht">
+        <thead><tr><th style="width:130px;">Canal</th><th>Métricas actuales</th><th>Diagnóstico</th><th style="width:130px;">Estado</th></tr></thead>
         <tbody>
-          <tr>
-            <td><span class="channel-name-cell">Instagram</span></td>
-            <td><span class="channel-data">~4.000 seguidores · 243 posts · cuenta activa</span></td>
-            <td><span class="channel-data">Contenido publicado sin estrategia de crecimiento. Alto esfuerzo, bajo retorno.</span></td>
-            <td><span class="status-badge s-low"><span class="status-dot"></span>Bajo</span></td>
-          </tr>
-          <tr>
-            <td><span class="channel-name-cell">TikTok</span></td>
-            <td><span class="channel-data">Cuenta @firenutrition.es · sin tracción visible</span></td>
-            <td><span class="channel-data">Mayor canal de crecimiento orgánico para suplementos en España. Completamente desaprovechado.</span></td>
-            <td><span class="status-badge s-dead"><span class="status-dot"></span>Crítico</span></td>
-          </tr>
-          <tr>
-            <td><span class="channel-name-cell">Facebook</span></td>
-            <td><span class="channel-data">11 likes · sin actividad estratégica</span></td>
-            <td><span class="channel-data">Prácticamente abandonado. No representa riesgo activo pero sí imagen descuidada.</span></td>
-            <td><span class="status-badge s-dead"><span class="status-dot"></span>Muerto</span></td>
-          </tr>
-          <tr>
-            <td><span class="channel-name-cell">LinkedIn</span></td>
-            <td><span class="channel-data">Página empresa · sin contenido regular</span></td>
-            <td><span class="channel-data">Canal B2B ideal para llegar a gym owners, nutricionistas y distribuidores. Totalmente ignorado.</span></td>
-            <td><span class="status-badge s-ignored"><span class="status-dot"></span>Ignorado</span></td>
-          </tr>
-          <tr>
-            <td><span class="channel-name-cell">YouTube</span></td>
-            <td><span class="channel-data">Sin presencia detectada</span></td>
-            <td><span class="channel-data">Sus nutricionistas ya producen contenido para el blog. Convertirlo a vídeo es la palanca pendiente.</span></td>
-            <td><span class="status-badge s-absent"><span class="status-dot"></span>Ausente</span></td>
-          </tr>
-          <tr>
-            <td><span class="channel-name-cell">Email / Newsletter</span></td>
-            <td><span class="channel-data">Formulario de suscripción en web</span></td>
-            <td><span class="channel-data">Captura activa sin flujos de automatización ni estrategia de contenido. LTV sin trabajar.</span></td>
-            <td><span class="status-badge s-low"><span class="status-dot"></span>Sin explotar</span></td>
-          </tr>
+          <tr><td><span class="chn">Instagram</span></td><td><span class="chd">~4.000 seg. · 243 posts · activa</span></td><td><span class="chd">Publicación sin estrategia de crecimiento. Alto esfuerzo, bajo retorno.</span></td><td><span class="bdg bl"><span class="dt"></span>Bajo</span></td></tr>
+          <tr><td><span class="chn">TikTok</span></td><td><span class="chd">@firenutrition.es · sin tracción visible</span></td><td><span class="chd">Canal #1 de crecimiento orgánico para suplementos en España. Completamente desaprovechado.</span></td><td><span class="bdg bd"><span class="dt"></span>Crítico</span></td></tr>
+          <tr><td><span class="chn">Facebook</span></td><td><span class="chd">11 likes · sin actividad real</span></td><td><span class="chd">Prácticamente muerto. Proyecta abandono a quien llega desde buscadores.</span></td><td><span class="bdg bd"><span class="dt"></span>Muerto</span></td></tr>
+          <tr><td><span class="chn">LinkedIn</span></td><td><span class="chd">Página empresa · sin contenido</span></td><td><span class="chd">Canal B2B ideal para gym owners, nutricionistas y distribuidores. Totalmente ignorado.</span></td><td><span class="bdg bi"><span class="dt"></span>Ignorado</span></td></tr>
+          <tr><td><span class="chn">YouTube</span></td><td><span class="chd">Sin presencia detectada</span></td><td><span class="chd">Sus nutricionistas producen artículos de calidad. Convertirlos a vídeo es la palanca pendiente.</span></td><td><span class="bdg ba"><span class="dt"></span>Ausente</span></td></tr>
+          <tr><td><span class="chn">Email</span></td><td><span class="chd">Formulario en web · sin flujos</span></td><td><span class="chd">Captura activa sin automatización. Sin bienvenida, sin carrito abandonado. LTV sin trabajar.</span></td><td><span class="bdg bl"><span class="dt"></span>Sin explotar</span></td></tr>
         </tbody>
       </table>
     </div>
 
     <!-- Fortalezas y debilidades -->
-    <div class="cards-grid-2 reveal" style="gap: 2px;">
-      <div>
-        <p class="label" style="margin-bottom: 16px; display:block;">Fortalezas detectadas</p>
-        <div style="display: flex; flex-direction: column; gap: 2px;">
-          <div class="insight-card">
-            <div class="card-icon icon-green">✦</div>
-            <div class="card-title">Producto sólido y diferenciado</div>
-            <div class="card-body">Ingredientes certificados (Creapure®, Kyowa®, DigeZyme®, KSM-66®) en 3 líneas claras. Esto es lo que compite en el top del mercado.</div>
-          </div>
-          <div class="insight-card">
-            <div class="card-icon icon-green">✦</div>
-            <div class="card-title">Colaboradores institucionales</div>
-            <div class="card-body">Universidad UFV, Consorcio Bomberos Toledo, CD Toledo, UB Conquense, HybridBox. Credibilidad institucional de primer nivel — muy subutilizada en comunicación.</div>
-          </div>
-          <div class="insight-card">
-            <div class="card-icon icon-green">✦</div>
-            <div class="card-title">Blog con base científica real</div>
-            <div class="card-body">Artículos firmados por nutricionistas licenciados (Alfredo Bravo, Carlos Ferrando, Marta Costa). Contenido diferencial vs. competidores genéricos.</div>
-          </div>
-          <div class="insight-card">
-            <div class="card-icon icon-green">✦</div>
-            <div class="card-title">Embajadores deportivos reales</div>
-            <div class="card-body">Lara, Chloe, Lazareno, Valentín Gamba, Josué, José Manuel Pardo, Javier Taberna... Un ejército de creadores de contenido potencial sin activar.</div>
+    <div style="margin-top:72px;">
+      <div class="g2 reveal">
+        <div>
+          <p class="label" style="display:block;margin-bottom:16px;">Fortalezas — activos reales</p>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div class="fc d1"><div class="fi ig">✦</div><div class="ft">Producto sólido y diferenciado</div><div class="fb">Creapure®, Kyowa®, DigeZyme®, KSM-66® en 3 líneas claras. Compite en el segmento premium real, no en commodities.</div></div>
+            <div class="fc d2"><div class="fi ig">✦</div><div class="ft">Colaboradores institucionales</div><div class="fb">Universidad UFV, Consorcio Bomberos Toledo, CD Toledo, UB Conquense, HybridBox. Credibilidad institucional de primer nivel — subutilizada en comunicación.</div></div>
+            <div class="fc d3"><div class="fi ig">✦</div><div class="ft">Blog con base científica real</div><div class="fb">Artículos firmados por nutricionistas licenciados. El activo de contenido más subestimado que tienen — y el más difícil de replicar para la competencia.</div></div>
+            <div class="fc d4"><div class="fi ig">✦</div><div class="ft">Red de embajadores deportivos</div><div class="fb">Lara, Chloe, Lazareno, Valentín Gamba, Josué, José Manuel Pardo, Javier Taberna... Un ejército de creadores potencial sin sistema para activarlos.</div></div>
           </div>
         </div>
-      </div>
-      <div>
-        <p class="label" style="margin-bottom: 16px; display:block;">Debilidades a resolver</p>
-        <div style="display: flex; flex-direction: column; gap: 2px;">
-          <div class="insight-card">
-            <div class="card-icon icon-red">✗</div>
-            <div class="card-title">Branding visual por debajo del producto</div>
-            <div class="card-body">El logo es funcional pero básico. No hay un design system real. El packaging tiene más nivel que la identidad digital de la marca.</div>
-          </div>
-          <div class="insight-card">
-            <div class="card-icon icon-red">✗</div>
-            <div class="card-title">Web sin arquitectura de conversión</div>
-            <div class="card-body">Hero con banners de producto rotantes, sin propuesta de valor en el fold. Los trust signals (UFV, Bomberos) están enterrados, cuando deberían ser la primera línea de defensa.</div>
-          </div>
-          <div class="insight-card">
-            <div class="card-icon icon-red">✗</div>
-            <div class="card-title">TikTok: ventana que se cierra</div>
-            <div class="card-body">En 2023–2025 marcas pequeñas de suplementos en España despegaron orgánicamente en TikTok. Cada mes que pasa sin estrategia, esa ventana se estrecha.</div>
-          </div>
-          <div class="insight-card">
-            <div class="card-icon icon-amber">△</div>
-            <div class="card-title">Embajadores sin sistema de contenido</div>
-            <div class="card-body">Los atletas patrocinados generan imágenes estáticas en la web pero no producen contenido regular con la marca. ROI del patrocinio sin optimizar.</div>
+        <div>
+          <p class="label" style="display:block;margin-bottom:16px;">Debilidades — a resolver</p>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div class="fc d1"><div class="fi ir">✗</div><div class="ft">Branding por debajo del producto</div><div class="fb">No existe un design system real. Cada touchpoint digital parece diseñado por separado. El packaging tiene más nivel que la identidad digital.</div></div>
+            <div class="fc d2"><div class="fi ir">✗</div><div class="ft">Web sin arquitectura de conversión</div><div class="fb">Trust signals (UFV, Bomberos, CD Toledo) están en el pie de página. Deberían ser la primera línea de persuasión, no una nota al margen.</div></div>
+            <div class="fc d3"><div class="fi ir">✗</div><div class="ft">TikTok: ventana que se cierra</div><div class="fb">En 2023–2025, marcas pequeñas de suplementos despegaron orgánicamente en TikTok sin inversión paid. Esa ventana no es permanente.</div></div>
+            <div class="fc d4"><div class="fi ia">△</div><div class="ft">Embajadores sin ROI visible</div><div class="fb">Los atletas patrocinados generan fotos estáticas en la web. Sin sistema de contenido, el coste del patrocinio no se traduce en tráfico ni ventas.</div></div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ═══════════════════════════════════════
-     03 — OPORTUNIDADES
-═══════════════════════════════════════ -->
+<!-- 02 OPORTUNIDADES -->
 <section id="oportunidades">
   <div class="wrap">
-    <div class="section-intro reveal">
-      <div class="section-num">03</div>
-      <div class="section-intro-right">
-        <span class="label" style="margin-bottom: 12px; display:block;">Oportunidades</span>
-        <h2>Dónde está el crecimiento</h2>
-        <p>Fire Nutrition tiene activos infrautilizados que con el sistema de diseño y comunicación adecuado pueden traducirse en crecimiento de comunidad, tráfico y conversión en menos de 12 meses.</p>
+    <div class="sh reveal">
+      <div class="sn">02</div>
+      <div class="sr">
+        <span class="label" style="display:block;margin-bottom:14px;">Oportunidades</span>
+        <h2>Dónde está el crecimiento real</h2>
+        <p>Fire Nutrition tiene activos infrautilizados que con el sistema correcto de diseño y comunicación pueden traducirse en crecimiento de comunidad, tráfico orgánico y conversión en menos de 12 meses.</p>
       </div>
     </div>
 
-    <div class="opp-grid reveal">
-      <div class="opp-card">
-        <span class="opp-number">01</span>
-        <div class="opp-title">Rediseño web orientado a conversión</div>
-        <div class="opp-body">Nueva home con hero narrativo, trust signals visibles desde el primer scroll (UFV, Bomberos, CD Toledo) y checkout optimizado para móvil. Potencial de subir la tasa de conversión del ~1% al 2–3%.</div>
-        <span class="opp-impact">↑ Alto impacto</span>
-      </div>
-      <div class="opp-card" style="background: var(--surface2);">
-        <span class="opp-number">02</span>
-        <div class="opp-title">Estrategia TikTok + activación de embajadores</div>
-        <div class="opp-body">Atletas y nutricionistas como creadores de contenido bajo un sistema de templates y narrativa de marca. Con 3–5 vídeos semanales se puede alcanzar 10K–50K seguidores en 6 meses de forma orgánica.</div>
-        <span class="opp-impact">↑ Alto impacto</span>
-      </div>
-      <div class="opp-card">
-        <span class="opp-number">03</span>
-        <div class="opp-title">Sistema de identidad de marca</div>
-        <div class="opp-body">Design system unificado: tipografía, paleta, iconografía, templates para RRSS, emails y documentos. Que Instagram, la web, el packaging y los emails hablen el mismo idioma visual.</div>
-        <span class="opp-impact">↑ Medio-alto impacto</span>
-      </div>
-      <div class="opp-card">
-        <span class="opp-number">04</span>
-        <div class="opp-title">LinkedIn B2B para distribución</div>
-        <div class="opp-body">Tienen la sección "¿Quieres vender Fire Nutrition?" sin estrategia detrás. LinkedIn es el canal ideal para captar gym owners, nutricionistas clínicos y distribuidores nacionales.</div>
-        <span class="opp-impact">↑ Canal sin trabajar</span>
-      </div>
-      <div class="opp-card" style="background: var(--surface2);">
-        <span class="opp-number">05</span>
-        <div class="opp-title">Email marketing con flujos automáticos</div>
-        <div class="opp-body">Captura activa de leads pero sin flujo de bienvenida ni secuencias de recuperación de carrito. Un sistema de email bien diseñado puede aportar hasta un 15–20% de ingresos adicionales.</div>
-        <span class="opp-impact">↑ Activo dormido</span>
-      </div>
-      <div class="opp-card">
-        <span class="opp-number">06</span>
-        <div class="opp-title">Contenido educativo en vídeo</div>
-        <div class="opp-body">Sus nutricionistas ya producen artículos científicos de calidad. Adaptar ese contenido a Reels, TikTok y YouTube Shorts los posiciona como autoridad en el mercado español de suplementos.</div>
-        <span class="opp-impact">↑ Diferenciación</span>
-      </div>
+    <div class="og reveal">
+      <div class="op"><span class="on">01</span><div class="ot">Rediseño web orientado a conversión</div><div class="ob">Nueva home con jerarquía narrativa clara: propuesta de valor → prueba social institucional → producto → CTA. Trust signals visibles desde el primer scroll. Checkout móvil optimizado. Potencial de subir la tasa de conversión del ~1% al 2–3%.</div><span class="of">↑ Alto impacto directo</span></div>
+      <div class="op"><span class="on">02</span><div class="ot">Estrategia TikTok + activación de embajadores</div><div class="ob">Atletas y nutricionistas como creadores bajo un sistema de templates y narrativas predefinidas. Con 3–5 vídeos semanales consistentes se puede alcanzar 10K–50K seguidores de forma orgánica en 6 meses.</div><span class="of">↑ Alto impacto — urgente</span></div>
+      <div class="op"><span class="on">03</span><div class="ot">Sistema de identidad de marca</div><div class="ob">Design system unificado: tipografía, paleta, iconografía, tono de voz. Templates para RRSS, emails y documentos. Que Instagram, la web, el packaging y los emails hablen el mismo idioma visual en todo momento.</div><span class="of">↑ Base de todo lo demás</span></div>
+      <div class="op"><span class="on">04</span><div class="ot">LinkedIn B2B para distribución</div><div class="ob">Tienen la sección "¿Quieres vender Fire Nutrition?" sin estrategia de captación detrás. LinkedIn es el canal ideal para gym owners, nutricionistas clínicos y distribuidores nacionales.</div><span class="of">↑ Canal B2B sin trabajar</span></div>
+      <div class="op"><span class="on">05</span><div class="ot">Email marketing con flujos automáticos</div><div class="ob">Captura activa de emails sin ningún flujo de automatización. Bienvenida + contenido educativo + recuperación de carrito puede aportar entre 15–20% de ingresos adicionales sobre el mismo tráfico actual.</div><span class="of">↑ Ingresos sobre tráfico existente</span></div>
+      <div class="op"><span class="on">06</span><div class="ot">Autoridad a través del contenido educativo</div><div class="ob">Sus nutricionistas ya producen artículos científicos de calidad. Adaptarlos a Reels, TikTok y YouTube los posiciona como la referencia técnica del mercado español — algo que ningún competidor grande puede replicar con credibilidad.</div><span class="of">↑ Diferenciación sostenible</span></div>
     </div>
 
-    <!-- Riesgos -->
-    <div style="margin-top: 80px;" class="reveal">
-      <p class="label" style="margin-bottom: 24px; display:block;">Riesgos a gestionar</p>
-      <div class="risk-list">
-        <div class="risk-item">
-          <div class="risk-severity sev-high"></div>
-          <div class="risk-content">
-            <h4>Competencia con presupuestos masivos</h4>
-            <p>HSN, Prozis, Myprotein y BiotechUSA dominan el mercado español con millones en performance marketing. Sin una identidad de marca fuerte y diferenciada, Fire Nutrition compite solo por precio — y eso es una guerra que no puede ganar.</p>
-          </div>
-        </div>
-        <div class="risk-item">
-          <div class="risk-severity sev-high"></div>
-          <div class="risk-content">
-            <h4>La ventana de TikTok se cierra</h4>
-            <p>En 2023–2025 marcas pequeñas de nutrición deportiva en España despegaron orgánicamente en TikTok sin inversión en paid. Esa ventana no es permanente. Cada mes sin estrategia, la competencia acumula audiencia que será muy difícil de recuperar.</p>
-          </div>
-        </div>
-        <div class="risk-item">
-          <div class="risk-severity sev-med"></div>
-          <div class="risk-content">
-            <h4>SEO orgánico sin datos visibles</h4>
-            <p>Sin posicionamiento para keywords clave ("proteína whey España", "creatina calidad", "suplementos endurance"), la marca depende al 100% de tráfico pagado o directo. Alta vulnerabilidad ante cambios en costes de paid.</p>
-          </div>
-        </div>
-        <div class="risk-item">
-          <div class="risk-severity sev-med"></div>
-          <div class="risk-content">
-            <h4>Embajadores con ROI sin optimizar</h4>
-            <p>El patrocinio de atletas tiene un coste real. Si esos atletas no generan contenido activo con la marca, el retorno es marginal. El activo está ahí — solo necesita un sistema para activarlo.</p>
-          </div>
-        </div>
+    <div style="margin-top:80px;" class="reveal">
+      <p class="label" style="display:block;margin-bottom:24px;">Riesgos si no se actúa</p>
+      <div class="rks">
+        <div class="rk"><div class="rb rh"></div><div class="rt"><h4>Competencia con presupuestos masivos</h4><p>HSN, Prozis, Myprotein y BiotechUSA dominan con millones en performance marketing. Sin identidad de marca fuerte, Fire Nutrition solo puede competir por precio — y eso es una guerra que no puede ganar.</p></div></div>
+        <div class="rk"><div class="rb rh"></div><div class="rt"><h4>La ventana de TikTok orgánico se cierra</h4><p>En 2023–2025, marcas pequeñas crecieron a decenas de miles de seguidores sin inversión paid. Cada mes sin estrategia, la competencia acumula audiencia que será muy costosa de recuperar.</p></div></div>
+        <div class="rk"><div class="rb rm"></div><div class="rt"><h4>SEO orgánico sin posicionamiento visible</h4><p>Sin rankings para "proteína whey España", "creatina premium" o "suplementos endurance", la marca depende 100% de tráfico pagado. Alta vulnerabilidad ante cambios en el coste del paid media.</p></div></div>
+        <div class="rk"><div class="rb rm"></div><div class="rt"><h4>Activos de embajadores con ROI marginal</h4><p>El patrocinio de atletas tiene un coste real. Sin sistema de contenido que los active consistentemente, ese coste genera muy poco retorno en tráfico, comunidad o ventas directas.</p></div></div>
       </div>
     </div>
-
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ═══════════════════════════════════════
-     04 — PLAN DE ACCIÓN
-═══════════════════════════════════════ -->
+<!-- 03 PLAN -->
 <section id="plan">
   <div class="wrap">
-    <div class="section-intro reveal">
-      <div class="section-num">04</div>
-      <div class="section-intro-right">
-        <span class="label" style="margin-bottom: 12px; display:block;">Plan de acción</span>
+    <div class="sh reveal">
+      <div class="sn">03</div>
+      <div class="sr">
+        <span class="label" style="display:block;margin-bottom:14px;">Plan de acción</span>
         <h2>Tres pilares para el crecimiento</h2>
-        <p>Un plan por fases que empieza por construir los cimientos correctos — identidad y web — antes de escalar la comunicación. Sin sistema, el contenido no escala.</p>
+        <p>Un enfoque por fases que construye los cimientos correctos antes de escalar la comunicación. Sin sistema de identidad, el contenido no escala. Sin web que convierta, el tráfico no se traduce en ventas.</p>
       </div>
     </div>
-
-    <div class="pillar-grid reveal">
-      <div class="pillar">
-        <div class="pillar-number">01</div>
-        <div class="pillar-title">Identidad & Autoridad de Marca</div>
-        <ul class="pillar-list">
-          <li>Refresh del sistema visual para proyectar calidad premium acorde al producto.</li>
-          <li>Design System completo: tipografía, paleta, iconografía, grid.</li>
-          <li>Templates para RRSS, emails y documentos comerciales.</li>
-          <li>Content System para infografías educativas y nutrición científica.</li>
-          <li>Unificación visual en todos los puntos de contacto digitales.</li>
+    <div class="pg reveal">
+      <div class="pl">
+        <div class="pn">01</div>
+        <div class="pt">Identidad & Autoridad de Marca</div>
+        <ul class="pli">
+          <li>Refresh del sistema visual: logo, tipografía, paleta y grid.</li>
+          <li>Design System completo para todos los canales digitales.</li>
+          <li>Templates de RRSS (Instagram, TikTok, Stories) para el equipo.</li>
+          <li>Content Design System para infografías de nutrición científica.</li>
+          <li>Brand guidelines: tono de voz, valores y reglas de uso.</li>
         </ul>
-        <span class="pillar-cta">Generar confianza y liderazgo →</span>
+        <span class="pf">Generar confianza y liderazgo →</span>
       </div>
-
-      <div class="pillar featured">
-        <div class="pillar-number">02</div>
-        <div class="pillar-title">Web & Conversión (CRO)</div>
-        <ul class="pillar-list">
-          <li>Rediseño de la Home con propuesta de valor clara en el primer scroll.</li>
+      <div class="pl fe">
+        <div class="pn">02</div>
+        <div class="pt">Web & Conversión (CRO)</div>
+        <ul class="pli">
+          <li>Rediseño completo de la Home con propuesta de valor en el primer scroll.</li>
           <li>Trust signals prominentes: UFV, Bomberos, CD Toledo, UB Conquense.</li>
-          <li>Simplificación del checkout para conversión móvil rápida.</li>
-          <li>Fichas de producto con jerarquía de información y storytelling de ingredientes.</li>
-          <li>Sistema de reseñas y prueba social integrado.</li>
+          <li>Checkout simplificado para conversión móvil rápida.</li>
+          <li>Fichas de producto con storytelling de ingredientes certificados.</li>
+          <li>Sistema de reseñas y prueba social integrado estratégicamente.</li>
         </ul>
-        <span class="pillar-cta">Maximizar tasa de conversión →</span>
+        <span class="pf">Maximizar tasa de conversión →</span>
       </div>
-
-      <div class="pillar">
-        <div class="pillar-number">03</div>
-        <div class="pillar-title">Redes Sociales & Activación</div>
-        <ul class="pillar-list">
-          <li>Estrategia TikTok First para capturar tráfico orgánico de alto ROI.</li>
-          <li>Activación de embajadores con sistema de contenido y guías de marca.</li>
-          <li>Narrativa emocional que conecte ciencia y rendimiento humano.</li>
-          <li>Flujos de email marketing: bienvenida, recuperación de carrito, educación.</li>
+      <div class="pl">
+        <div class="pn">03</div>
+        <div class="pt">Redes Sociales & Activación</div>
+        <ul class="pli">
+          <li>Estrategia TikTok First para captura de tráfico orgánico.</li>
+          <li>Sistema de activación de embajadores con guías y templates.</li>
+          <li>Narrativa emocional: ciencia + rendimiento + historia real.</li>
+          <li>Flujos de email: bienvenida, carrito abandonado, educación.</li>
           <li>Estrategia LinkedIn B2B para captación de distribuidores.</li>
         </ul>
-        <span class="pillar-cta">Aumentar engagement y alcance →</span>
+        <span class="pf">Aumentar engagement y alcance →</span>
       </div>
     </div>
-
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ═══════════════════════════════════════
-     05 — METODOLOGÍA
-═══════════════════════════════════════ -->
+<!-- 04 ENTREGABLES -->
+<section id="entregables">
+  <div class="wrap">
+    <div class="sh reveal">
+      <div class="sn">04</div>
+      <div class="sr">
+        <span class="label" style="display:block;margin-bottom:14px;">Entregables concretos</span>
+        <h2>Exactamente qué recibes</h2>
+        <p>Sin ambigüedades. Esto es lo que se entrega al cierre de cada fase, con formatos listos para producción.</p>
+      </div>
+    </div>
+
+    <div class="dg reveal">
+      <div class="dv">
+        <span class="dl">Fase 1 · Identidad</span>
+        <div class="dt2">Sistema de marca</div>
+        <ul class="di">
+          <li>Logo refresh + variantes (positivo, negativo, isotipo)</li>
+          <li>Paleta de colores con códigos HEX, RGB, CMYK</li>
+          <li>Tipografías primaria y secundaria con jerarquía de uso</li>
+          <li>Iconografía y elementos gráficos de marca</li>
+          <li>Brand guidelines en PDF (30–40 páginas)</li>
+          <li>Tono de voz y guía de contenido escrito</li>
+        </ul>
+      </div>
+      <div class="dv">
+        <span class="dl">Fase 2 · Web</span>
+        <div class="dt2">Web rediseñada</div>
+        <ul class="di">
+          <li>Diseño de Home en Figma (desktop + mobile)</li>
+          <li>Prototipo interactivo navegable para validación</li>
+          <li>Rediseño de fichas de producto (plantilla aplicable)</li>
+          <li>Rediseño del checkout y flujo de compra móvil</li>
+          <li>Especificaciones técnicas para desarrollador</li>
+          <li>Sistema de componentes reutilizables en Figma</li>
+        </ul>
+      </div>
+      <div class="dv">
+        <span class="dl">Fase 3 · RRSS</span>
+        <div class="dt2">Sistema de contenido</div>
+        <ul class="di">
+          <li>Estrategia de canales priorizada (TikTok, IG, LinkedIn)</li>
+          <li>12 templates de Instagram Stories y Feed editables</li>
+          <li>8 templates de TikTok/Reels para embajadores</li>
+          <li>Guía de activación para atletas patrocinados</li>
+          <li>Plantilla de email para newsletter semanal</li>
+          <li>Flujo de automatización de email configurado</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div style="margin-top:80px;" class="reveal">
+      <p class="label" style="display:block;margin-bottom:32px;">Calendario de entrega estimado</p>
+      <div class="tl">
+        <div class="tli"><div class="tld ac">S1</div><div class="tlc"><div class="tlp">Semana 1 — Discovery</div><div class="tlt">Workshop de alineación</div><ul class="tlis"><li>Sesión de 2h para mapear objetivos, KPIs y buyer personas</li><li>Auditoría técnica completa de web actual</li><li>Análisis profundo de competencia directa e indirecta</li><li>Entregable: Brief estratégico validado</li></ul></div></div>
+        <div class="tli"><div class="tld ac">S2-3</div><div class="tlc"><div class="tlp">Semanas 2–3 — Identidad</div><div class="tlt">Sistema visual de marca</div><ul class="tlis"><li>3 propuestas de dirección visual para validar</li><li>Refinamiento de la dirección seleccionada</li><li>Entregable: Brand guidelines completo + assets en todos los formatos</li></ul></div></div>
+        <div class="tli"><div class="tld ac">S4-6</div><div class="tlc"><div class="tlp">Semanas 4–6 — Web</div><div class="tlt">Diseño web + prototipo</div><ul class="tlis"><li>Wireframes de arquitectura de información</li><li>Diseño de alta fidelidad desktop + mobile</li><li>Prototipo interactivo y especificaciones de desarrollo</li><li>Entregable: Figma listo para implementación</li></ul></div></div>
+        <div class="tli"><div class="tld ac">S7-8</div><div class="tlc"><div class="tlp">Semanas 7–8 — Contenido digital</div><div class="tlt">Sistema de RRSS + email</div><ul class="tlis"><li>Templates de RRSS y guías de embajadores</li><li>Estrategia de contenido TikTok por pilares temáticos</li><li>Flujos de email automatizados configurados</li><li>Entregable: Kit completo listo para activar</li></ul></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 05 MÉTODO -->
 <section id="metodo">
   <div class="wrap">
-    <div class="section-intro reveal">
-      <div class="section-num">05</div>
-      <div class="section-intro-right">
-        <span class="label" style="margin-bottom: 12px; display:block;">El método</span>
+    <div class="sh reveal">
+      <div class="sn">05</div>
+      <div class="sr">
+        <span class="label" style="display:block;margin-bottom:14px;">Metodología</span>
         <h2>Cómo vamos a trabajar</h2>
-        <p>Un proceso iterativo, orientado a resultados medibles, con puntos de revisión claros en cada fase.</p>
+        <p>Un proceso iterativo, orientado a resultados medibles, con puntos de revisión claros en cada fase y comunicación directa en todo momento.</p>
       </div>
     </div>
 
-    <div class="process-row reveal">
-      <div class="process-step">
-        <div class="step-counter">FASE 01</div>
-        <div class="step-title">Discovery</div>
-        <div class="step-desc">Workshop de alineación: objetivos de negocio, KPIs, buyer personas, análisis profundo de competencia y auditoría técnica de la web actual.</div>
+    <div class="pw reveal">
+      <div class="ps">
+        <span class="psn">Fase 01</span>
+        <div class="pst">Discovery</div>
+        <div class="psd">Workshop estratégico de alineación. Sin este paso, todo lo demás se construye sobre suposiciones.</div>
+        <ul class="psli">
+          <li>Sesión de trabajo con el equipo fundador</li>
+          <li>Mapa de buyer personas y customer journey</li>
+          <li>Auditoría técnica web (velocidad, SEO, mobile)</li>
+          <li>Análisis de competencia con benchmarking visual</li>
+          <li>Definición de KPIs y métricas de éxito</li>
+        </ul>
       </div>
-      <div class="process-step">
-        <div class="step-counter">FASE 02</div>
-        <div class="step-title">Strategy</div>
-        <div class="step-desc">Arquitectura de la narrativa de marca, mapa de contenidos, plan de canales prioritarios y definición del sistema visual de identidad.</div>
+      <div class="ps">
+        <span class="psn">Fase 02</span>
+        <div class="pst">Strategy</div>
+        <div class="psd">Arquitectura de la narrativa de marca y mapa de acción priorizado por impacto de negocio.</div>
+        <ul class="psli">
+          <li>Estrategia de posicionamiento y propuesta de valor</li>
+          <li>Arquitectura de narrativa visual y textual</li>
+          <li>Mapa de contenidos por canal y audiencia</li>
+          <li>Roadmap de implementación por fases</li>
+          <li>Brief creativo validado por el cliente</li>
+        </ul>
       </div>
-      <div class="process-step">
-        <div class="step-counter">FASE 03</div>
-        <div class="step-title">Design</div>
-        <div class="step-desc">Creación del Design System, prototipado interactivo de la nueva web, templates de RRSS y guías de contenido para embajadores.</div>
+      <div class="ps">
+        <span class="psn">Fase 03</span>
+        <div class="pst">Design</div>
+        <div class="psd">Creación del sistema visual, prototipado interactivo y producción de todos los entregables.</div>
+        <ul class="psli">
+          <li>3 propuestas de dirección visual para validar</li>
+          <li>Iteraciones con feedback directo y rápido</li>
+          <li>Prototipo navegable antes de pasar a desarrollo</li>
+          <li>Revisiones incluidas en cada entregable</li>
+          <li>Handoff completo con especificaciones</li>
+        </ul>
       </div>
-      <div class="process-step">
-        <div class="step-counter">FASE 04</div>
-        <div class="step-title">Growth</div>
-        <div class="step-desc">Implementación, medición de KPIs en tiempo real y ciclos de mejora continua basados en datos. No paramos hasta que los números suben.</div>
-      </div>
-    </div>
-
-    <!-- Por qué Dark Matter -->
-    <div style="margin-top: 80px;">
-      <p class="label reveal" style="margin-bottom: 24px; display:block;">Por qué Dark Matter</p>
-      <div class="why-grid reveal">
-        <div class="why-item">
-          <div class="why-num">01</div>
-          <div class="why-body">
-            <h4>Entendemos el mercado de nicho</h4>
-            <p>Diseñamos para marcas que compiten en categorías saturadas donde el diseño es la única forma de diferenciación real a largo plazo.</p>
-          </div>
-        </div>
-        <div class="why-item">
-          <div class="why-num">02</div>
-          <div class="why-body">
-            <h4>Diseño orientado a negocio</h4>
-            <p>Cada decisión estética está justificada por un objetivo de conversión, retención o posicionamiento. No hacemos cosas bonitas que no venden.</p>
-          </div>
-        </div>
-        <div class="why-item">
-          <div class="why-num">03</div>
-          <div class="why-body">
-            <h4>Sistemas, no proyectos únicos</h4>
-            <p>No entregamos un logo y desaparecemos. Construimos sistemas que el equipo de Fire Nutrition puede escalar autónomamente.</p>
-          </div>
-        </div>
-        <div class="why-item">
-          <div class="why-num">04</div>
-          <div class="why-body">
-            <h4>Resultados medibles en 90 días</h4>
-            <p>Definimos KPIs claros desde el día uno y revisamos resultados con cadencia quincenal. Sin métricas de vanidad — solo lo que importa para el negocio.</p>
-          </div>
-        </div>
+      <div class="ps">
+        <span class="psn">Fase 04</span>
+        <div class="pst">Growth</div>
+        <div class="psd">Medición de impacto y mejora continua. Los números guían, no las opiniones.</div>
+        <ul class="psli">
+          <li>Dashboard de KPIs actualizado quincenalmente</li>
+          <li>Revisión mensual de resultados con el equipo</li>
+          <li>Optimización iterativa basada en datos reales</li>
+          <li>Adaptación de estrategia según performance</li>
+          <li>Soporte post-entrega incluido (30 días)</li>
+        </ul>
       </div>
     </div>
 
+    <div style="margin-top:80px;">
+      <p class="label reveal" style="display:block;margin-bottom:24px;">Por qué Dark Matter</p>
+      <div class="wg reveal">
+        <div class="wi"><div class="wn">01</div><div class="wb"><h4>Diseño orientado a negocio, no a premios</h4><p>Cada decisión estética tiene una justificación en conversión, retención o posicionamiento. No hacemos cosas bonitas que no venden.</p></div></div>
+        <div class="wi"><div class="wn">02</div><div class="wb"><h4>Sistemas, no proyectos de un solo uso</h4><p>No entregamos un logo y desaparecemos. Construimos sistemas que el equipo de Fire Nutrition puede escalar autónomamente sin depender de nosotras para cada pieza.</p></div></div>
+        <div class="wi"><div class="wn">03</div><div class="wb"><h4>Entendemos marcas de nicho con ambición</h4><p>Diseñamos para marcas que compiten en categorías saturadas donde el diseño es la única forma de diferenciación real y sostenible a largo plazo.</p></div></div>
+        <div class="wi"><div class="wn">04</div><div class="wb"><h4>Comunicación directa, sin capas</h4><p>Acceso directo a quien diseña tu proyecto — no a un account manager. Iteraciones rápidas, feedback claro, entregas puntuales.</p></div></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ═══════════════════════════════════════
-     FOOTER / CTA
-═══════════════════════════════════════ -->
+<!-- 06 SOBRE SOL -->
+<section id="sobre">
+  <div class="wrap">
+    <div class="sh reveal">
+      <div class="sn">06</div>
+      <div class="sr">
+        <span class="label" style="display:block;margin-bottom:14px;">Quién hay detrás</span>
+        <h2>Sol Correa Cuenca</h2>
+        <p>Founder & Product Designer de We Are Dark Matter. Diseñadora de producto con foco en marcas que necesitan presencia digital de primer nivel para competir en mercados saturados.</p>
+      </div>
+    </div>
+    <div class="aw reveal">
+      <div class="al">
+        <div>
+          <div class="alt">Diseño que mueve el negocio hacia adelante.</div>
+          <div class="ald">Trabajo en la intersección entre identidad de marca, diseño de producto y estrategia de contenido. Mi objetivo no es hacer marcas bonitas — es hacer marcas que compiten, que convierten y que escalan.</div>
+        </div>
+        <div style="margin-top:40px;">
+          <div style="font-size:11px;color:rgba(0,0,0,.5);margin-bottom:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Contacto directo</div>
+          <a href="mailto:hey.darkmatter@gmail.com" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--black);text-decoration:none;border-bottom:2px solid rgba(0,0,0,.3);padding-bottom:2px;">hey.darkmatter@gmail.com</a>
+        </div>
+      </div>
+      <div class="ar">
+        <div class="ais">
+          <div><span class="ai-lb">Especialidad</span><div class="ai-v">Branding · UI/UX · Design Systems · Content Design</div></div>
+          <div style="padding-top:20px;border-top:1px solid var(--border);"><span class="ai-lb">Enfoque</span><div class="ai-v">Marcas con producto premium que necesitan una presencia digital a su altura</div></div>
+          <div style="padding-top:20px;border-top:1px solid var(--border);"><span class="ai-lb">Estudio</span><div class="ai-v">We Are Dark Matter — Madrid, España</div></div>
+          <div style="padding-top:20px;border-top:1px solid var(--border);"><span class="ai-lb">Proceso</span><div class="ai-v">Discovery → Strategy → Design → Growth. Iterativo, medible, orientado a resultados.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 07 PRÓXIMOS PASOS -->
+<section id="pasos">
+  <div class="wrap">
+    <div class="sh reveal">
+      <div class="sn">07</div>
+      <div class="sr">
+        <span class="label" style="display:block;margin-bottom:14px;">Próximos pasos</span>
+        <h2>Cómo arrancamos</h2>
+        <p>Tres pasos para pasar de esta propuesta a resultados reales. Sin complicaciones.</p>
+      </div>
+    </div>
+    <div class="nsg reveal">
+      <div class="ns"><div class="nsn">01</div><div class="nsh"><h4>Llamada estratégica de 30 min</h4><p>Una conversación para entender tus prioridades inmediatas, responder preguntas y ver si encajamos. Sin compromiso, sin presión.</p></div></div>
+      <div class="ns" style="background:var(--surface2);"><div class="nsn">02</div><div class="nsh"><h4>Propuesta económica personalizada</h4><p>Después de la llamada, te envío una propuesta detallada con el alcance exacto, los entregables y la inversión — sin sorpresas ni letra pequeña.</p></div></div>
+      <div class="ns"><div class="nsn">03</div><div class="nsh"><h4>Kickoff y Discovery</h4><p>Agendamos el workshop de alineación y arrancamos. Desde el primer día sabrás exactamente qué se hace y cuándo lo recibes.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- FOOTER -->
 <footer id="contacto">
   <div class="wrap">
     <div class="reveal">
-      <h2 class="footer-headline">
-        ¿Diseñamos el<br>
-        <em>futuro</em> de<br>
-        Fire Nutrition?
-      </h2>
-      <p class="footer-sub">
-        Lista para transformar cada una de estas áreas en resultados de negocio reales. Una llamada de 30 minutos para entender tu contexto y ver si encajamos.
-      </p>
-      <a href="mailto:solcorreacuenca@gmail.com?subject=Propuesta Fire Nutrition — Hablemos" class="cta-btn">
-        Agendar llamada estratégica
-      </a>
+      <h2 class="fhl">¿Diseñamos el<br><em>futuro</em> de<br>Fire Nutrition?</h2>
+      <p class="fsb">Lista para convertir cada una de estas áreas en resultados de negocio reales. Una llamada de 30 minutos para ver si encajamos.</p>
+      <a href="mailto:hey.darkmatter@gmail.com?subject=Fire Nutrition — Quiero agendar una llamada" class="cta">Agendar llamada estratégica</a>
+      <a href="https://wa.me/?text=Hola%20Sol%2C%20he%20visto%20tu%20propuesta%20para%20Fire%20Nutrition%20y%20me%20gustar%C3%ADa%20hablarlo." class="cta2" target="_blank">o escríbeme por WhatsApp →</a>
     </div>
-
-    <div class="footer-bottom reveal">
-      <div class="footer-credits">
-        <strong>Sol Correa Cuenca</strong><br>
-        Founder & Product Designer<br>
-        We Are Dark Matter — 2026
-      </div>
-      <div style="text-align: right;">
-        <div class="dm-logo" style="margin-bottom: 8px;">We Are Dark Matter</div>
-        <div style="font-size: 11px; color: var(--gray);">Documento confidencial · Fire Nutrition × Dark Matter · Abril 2026</div>
-      </div>
+    <div class="fb2 reveal">
+      <div class="fc2"><strong>Sol Correa Cuenca</strong><br>Founder & Product Designer<br>We Are Dark Matter · Madrid · 2026</div>
+      <div class="fr"><div class="fbrand">We Are Dark Matter</div><div class="fconf">Documento confidencial · Fire Nutrition × Dark Matter · Abril 2026</div></div>
     </div>
   </div>
 </footer>
 
 <script>
-// ─── SCROLL REVEAL ───
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-reveals.forEach(el => observer.observe(el));
+const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.08,rootMargin:'0px 0px -32px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// ─── SCORE BAR ANIMATION ───
-const scoreObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.querySelectorAll('.score-fill').forEach(bar => {
-        setTimeout(() => bar.classList.add('animated'), 200);
-      });
-    }
-  });
-}, { threshold: 0.3 });
-document.querySelectorAll('.scores-grid').forEach(el => scoreObserver.observe(el));
+const sobs = new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.sb').forEach((b,i)=>setTimeout(()=>b.classList.add('anim'),150+i*80));sobs.unobserve(x.target);}});},{threshold:.2});
+document.querySelectorAll('.sw').forEach(el=>sobs.observe(el));
 
-// ─── NAV SHOW ON SCROLL ───
-const nav = document.getElementById('main-nav');
-let lastY = 0;
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (y > 600) {
-    nav.classList.add('visible');
-  } else {
-    nav.classList.remove('visible');
-  }
-  lastY = y;
-}, { passive: true });
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('show',scrollY>500),{passive:true});
 </script>
-
 </body>
 </html>
